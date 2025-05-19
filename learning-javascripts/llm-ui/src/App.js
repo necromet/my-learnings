@@ -4,66 +4,67 @@ import userIcon from './assets/user.svg'
 import aiIcon from './assets/ai_chatbot.svg'
 import sendIcon from './assets/send_button.svg'
 
-// import { chatOpenAI } from './server/openai';
+import { useState } from 'react';
 
 function App() {
-  // const [input, setInput] = useState("");
-  // const [messages, setMessages] = useState([
-  //     {
-  //     text: "Hi, I am ChatGPT",
-  //     isBot: true
-  //     }
-  //   ]);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([
+      {
+      content: "Hello, how can I help you?",
+      isBot: true
+      }
+    ]);
 
-  // const handleSend = async () => {
-  //   const res = await chatOpenAI(input);
-  //   setMessages([
-  //     ...messages,
-  //     { text: input, isBot: false },
-  //     { text: res, isBot: true } 
-  //   ])
-  // }
+  const handleSend = async () => {
+    const newMessage = { content: input, isBot: false };
+
+    try {
+      const res = await fetch("http://localhost:3001/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: input }),
+      });
+
+      const data = await res.json();
+      const botReply = { content: data.reply, isBot: true };
+
+      setMessages(prev => [...prev, newMessage, botReply]);
+      setInput(""); 
+    } catch (err) {
+      console.error("Fetch failed:", err);
+    }
+  };
 
 
   return (
-    <body>
-      <div class="flex">
-        <div class="sidebar">
-          <img src="" alt="" class="userIcon" />This is Sidebar
+      <div className="flex">
+        <div className="sidebar">
+          <img src="" alt="" className="userIcon" />This is Sidebar
         </div>
         <div className = 'main'>
           <div className = "chatBox">
-            <div class="chats">
-              <div class="chat">
-                <img className = 'chatIMG' src={userIcon} alt="This is Me"/><p class="txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore numquam totam illum enim sunt eligendi rem, minima adipisci aspernatur corporis perferendis corrupti ut. Laboriosam earum qui, quam aperiam tempora ullam ratione recusandae placeat nesciunt! Dolor deserunt culpa doloremque laudantium recusandae aliquam amet. Possimus, saepe deleniti autem modi, minus iusto ad sunt, error non aspernatur rerum praesentium adipisci sed doloribus amet consectetur quas corrupti animi similique assumenda earum ipsam. Quo provident laboriosam corporis, doloremque ducimus sunt perferendis quibusdam libero ullam delectus tempora aliquid fuga dolorem at, sequi harum soluta. Ipsam molestias maxime excepturi placeat obcaecati quis ipsum unde quas doloremque repudiandae.</p>
-              </div>
-              <div class="chat">
-                <img className = 'chatIMG' src={aiIcon} alt="This is AI"/><p class="txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore numquam totam illum enim sunt eligendi rem, minima adipisci aspernatur corporis perferendis corrupti ut. Laboriosam earum qui, quam aperiam tempora ullam ratione recusandae placeat nesciunt! Dolor deserunt culpa doloremque laudantium recusandae aliquam amet. Possimus, saepe deleniti autem modi, minus iusto ad sunt, error non aspernatur rerum praesentium adipisci sed doloribus amet consectetur quas corrupti animi similique assumenda earum ipsam. Quo provident laboriosam corporis, doloremque ducimus sunt perferendis quibusdam libero ullam delectus tempora aliquid fuga dolorem at, sequi harum soluta. Ipsam molestias maxime excepturi placeat obcaecati quis ipsum unde quas doloremque repudiandae.</p>
-              </div>
-              <div class="chat">
-                <img className = 'chatIMG' src={aiIcon} alt="This is AI"/><p class="txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore numquam totam illum enim sunt eligendi rem, minima adipisci aspernatur corporis perferendis corrupti ut. Laboriosam earum qui, quam aperiam tempora ullam ratione recusandae placeat nesciunt! Dolor deserunt culpa doloremque laudantium recusandae aliquam amet. Possimus, saepe deleniti autem modi, minus iusto ad sunt, error non aspernatur rerum praesentium adipisci sed doloribus amet consectetur quas corrupti animi similique assumenda earum ipsam. Quo provident laboriosam corporis, doloremque ducimus sunt perferendis quibusdam libero ullam delectus tempora aliquid fuga dolorem at, sequi harum soluta. Ipsam molestias maxime excepturi placeat obcaecati quis ipsum unde quas doloremque repudiandae.</p>
-              </div>
-              <div class="chat">
-                <img className = 'chatIMG' src={aiIcon} alt="This is AI"/><p class="txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore numquam totam illum enim sunt eligendi rem, minima adipisci aspernatur corporis perferendis corrupti ut. Laboriosam earum qui, quam aperiam tempora ullam ratione recusandae placeat nesciunt! Dolor deserunt culpa doloremque laudantium recusandae aliquam amet. Possimus, saepe deleniti autem modi, minus iusto ad sunt, error non aspernatur rerum praesentium adipisci sed doloribus amet consectetur quas corrupti animi similique assumenda earum ipsam. Quo provident laboriosam corporis, doloremque ducimus sunt perferendis quibusdam libero ullam delectus tempora aliquid fuga dolorem at, sequi harum soluta. Ipsam molestias maxime excepturi placeat obcaecati quis ipsum unde quas doloremque repudiandae.</p>
-              </div>
-              <div class="chat">
-                <img className = 'chatIMG' src={aiIcon} alt="This is AI"/><p class="txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore numquam totam illum enim sunt eligendi rem, minima adipisci aspernatur corporis perferendis corrupti ut. Laboriosam earum qui, quam aperiam tempora ullam ratione recusandae placeat nesciunt! Dolor deserunt culpa doloremque laudantium recusandae aliquam amet. Possimus, saepe deleniti autem modi, minus iusto ad sunt, error non aspernatur rerum praesentium adipisci sed doloribus amet consectetur quas corrupti animi similique assumenda earum ipsam. Quo provident laboriosam corporis, doloremque ducimus sunt perferendis quibusdam libero ullam delectus tempora aliquid fuga dolorem at, sequi harum soluta. Ipsam molestias maxime excepturi placeat obcaecati quis ipsum unde quas doloremque repudiandae.</p>
-              </div>
-              <div class="chat">
-                <img className = 'chatIMG' src={aiIcon} alt="This is AI"/><p class="txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore numquam totam illum enim sunt eligendi rem, minima adipisci aspernatur corporis perferendis corrupti ut. Laboriosam earum qui, quam aperiam tempora ullam ratione recusandae placeat nesciunt! Dolor deserunt culpa doloremque laudantium recusandae aliquam amet. Possimus, saepe deleniti autem modi, minus iusto ad sunt, error non aspernatur rerum praesentium adipisci sed doloribus amet consectetur quas corrupti animi similique assumenda earum ipsam. Quo provident laboriosam corporis, doloremque ducimus sunt perferendis quibusdam libero ullam delectus tempora aliquid fuga dolorem at, sequi harum soluta. Ipsam molestias maxime excepturi placeat obcaecati quis ipsum unde quas doloremque repudiandae.</p>
-              </div>
+            <div className="chats">
+              {messages.map((message, i) => 
+                  <div key = {i} className={message.isBot?"chat bot": "chat"}>
+                    <img className = 'chatIMG' src={message.isBot?aiIcon:userIcon} alt=""/><p className="txt">{ message.content }</p>
+                  </div>
+              )}
             </div>
           </div>
           <div className = "inputBox">
             <div className = "chatInput">
-              <input type = 'text' placeholder = 'Send a message'/> <button class="send">
+              <input type = 'text' placeholder = 'Send a message' value = {input} 
+              onChange = {(e) => {setInput(e.target.value)}} onKeyDown={(e) => {if (e.key === "Enter"){handleSend();}}}/> 
+              <button className="send" onClick={handleSend}>
                 <img className = 'sendIMG' src={sendIcon} alt="Send" /></button>
             </div>
           </div>
         </div>
       </div>
-    </body>
   );
 }
-
+// value = {input} onChange = {(e) => {setInput(e.target.value)}}
+// onClick={handleSend}
 export default App;
