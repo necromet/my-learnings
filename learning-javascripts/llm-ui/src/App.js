@@ -1,22 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import userIcon from './assets/user.svg'
 import aiIcon from './assets/ai_chatbot.svg'
 import sendIcon from './assets/send_button.svg'
 
 import { useState } from 'react';
+import { renderChatContent } from './renderChatContent.js';
 
 function App() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(""); // Setting up Inputs using useState.
   const [messages, setMessages] = useState([
       {
-      content: "Hello, how can I help you?",
-      isBot: true
+        content: "Hello, how can I help you?",  // Setting up messages to show in FrontEnd.
+        isBot: true
       }
     ]);
 
+  const [chatHistory, setChatHistory] = useState([ // Setting up Chat History so that the context is maintained.
+      { 
+        role: "system", 
+        content: "You are a helpful assistant." 
+      },
+    ]);
+
   const handleSend = async () => {
-    const newMessage = { content: input, isBot: false };
+    const text = input;
+    const userMessage = { 
+      role: "user", 
+      content: text, 
+      isBot: false 
+    };
+    
+    setMessages(prev => [...prev, userMessage]); // Sending the Input from Input Box into Chat Box
+    setInput(""); // Clearing up the Input from Input Box
+
+    setChatHistory([ // Adding Chat History
+      ...chatHistory,
+      { text, isbot: false }
+    ]);
+
+    const updatedHistory = [...chatHistory, userMessage];
 
     try {
       const res = await fetch("http://localhost:3001/chat", {
@@ -24,19 +47,24 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ messageBody: updatedHistory }),
       });
 
       const data = await res.json();
-      const botReply = { content: data.reply, isBot: true };
+      const botReply = { 
+        role: "assistant",
+        content: data.reply, 
+        isBot: true 
+      };
 
-      setMessages(prev => [...prev, newMessage, botReply]);
-      setInput(""); 
+      setChatHistory([...updatedHistory, botReply]);
+      setMessages(prev => [...prev, botReply]); 
     } catch (err) {
       console.error("Fetch failed:", err);
     }
   };
 
+  // const renderedMessage = renderChatContent(setMessages.botReply.content);
 
   return (
       <div className="flex">
@@ -48,7 +76,8 @@ function App() {
             <div className="chats">
               {messages.map((message, i) => 
                   <div key = {i} className={message.isBot?"chat bot": "chat"}>
-                    <img className = 'chatIMG' src={message.isBot?aiIcon:userIcon} alt=""/><p className="txt">{ message.content }</p>
+                    <img className = 'chatIMG' src={message.isBot?aiIcon:userIcon} alt=""/>
+                    <p className="txt" dangerouslySetInnerHTML={{__html: renderChatContent(message.content) }}></p>
                   </div>
               )}
             </div>

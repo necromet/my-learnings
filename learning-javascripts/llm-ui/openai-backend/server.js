@@ -15,15 +15,10 @@ const openai = new OpenAI({
 
 app.post('/chat', async (req, res) => {
   try {
-    const userMessage = req.body.message;
+    const messageBody = req.body.messageBody;
     const response = await openai.chat.completions.create({
       model: 'gpt-4.1-nano',
-      messages: [
-        { 
-          role: 'user', 
-          content: userMessage 
-        }
-      ],
+      messages: messageBody
     });
 
     const reply = response.choices[0].message.content;
