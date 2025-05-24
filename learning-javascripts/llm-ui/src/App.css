@@ -3,6 +3,9 @@
 
 .flex{
     display: flex;
+    overflow: hidden;
+    flex-direction: row;
+    align-items: center;
 }
 
 .outfit-regular {
@@ -21,15 +24,23 @@
     --stroke-clr: #2b2c34;
     --highlight-clr: #6246ea;
     --button-clr: #fffffe;
+
+    --input-box-width: 100%;
+    --input-box-margin: 2.5vw;
+
+    --chatbox-height: 85vh;
+    --chatbox-width: 100%;
+    --chatbox-margin-bottom: 1.5rem;
+    --chatbox-margin-right: 2rem;
 }
 
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 p{
     margin:0;
-    font-size: 20px;
 }
 
 h3{
@@ -63,26 +74,34 @@ hr{
     background-color: var(--base-clr);
 }
 
+table{
+    border: 1px solid;
+    border-color: var(--secondbase-clr);
+    border-radius: 20px;
+    
+    padding: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
 body{
-    min-height: 100vh;
-    min-height: 100dvh;
     background-color: var(--base-clr);
     color: var(--paragraph-clr);
-    display: grid;
-    grid-template-columns: auto 1fr;
 }
 
 .sidebar{
     box-sizing: border-box;
     font-family: "Outfit", sans-serif;
+    
     height: 100vh;
     width: 20vw;
-    padding: 20px 1em; /* Padding 5 pixels top and bottom, 1 em left and right. */
+    padding: 20px 1em; 
+    
+    /* Padding 5 pixels top and bottom, 1 em left and right. */
     background-color: var(--secondbase-clr);
     border-right: 0px solid var(--stroke-clr);
 
     position: sticky;
-    top: 0;
     align-self: start;
     transition: 300ms ease-in-out;
     overflow: hidden;
@@ -94,23 +113,27 @@ body{
     font-optical-sizing: auto;
     font-weight: 600;
     font-style: normal;
+
+    /* height: 80vh; */
+    width: 80vw;
+
     padding-top: min(15px, 7%);
     padding-left: min(30px, 7%);
 }
 
 .chatBox{
     /* Outer */
-    border-radius: 0em;
-    margin-bottom: 1.5rem;
-    margin-right: 1.5rem;
+    margin-bottom: var(--chatbox-margin-bottom);
+    margin-right: var(--chatbox-margin-right);
 
     /* Inner */
-    padding: min(2em, 15%);
     background-color: var(--base-clr);
 
     box-sizing: border-box;
-    height: 85vh;
-    width: 78vw;
+    
+    height: var(--chatbox-height);
+    max-width: var(--chatbox-width);
+
     flex-direction: column;
     align-items: center;
 
@@ -120,26 +143,41 @@ body{
 .chats{
     overflow: hidden;
     overflow-y: scroll;
+
     scroll-behavior: smooth;
 
-    scrollbar-color: var(--secondbase-clr);
-    width: 101%;
+    background-color: #2b2c34;
 
-    height: calc(100vh - 12rem);
+    scrollbar-color: var(--secondbase-clr);
+
+    max-width: var(--chatbox-width);
+    height: 100%;
 }
 
 .chat{
+    background-color: var(--secondbase-clr);
+    border-radius: 20px;
     display: flex;
     text-align: justify;
-
-    font-size: 1em;
-    font-weight: 500;
 
     margin-bottom: 1.5rem;
     margin-right: 2rem;
     padding: 1rem;
     
-    justify-content: baseline;
+    justify-items:center;
+    align-items: start;
+}
+
+.chat.bot{
+    background-color: var(--base-clr);
+    display: flex;
+    text-align: justify;
+
+    margin-bottom: 1.5rem;
+    margin-right: 2rem;
+    padding: 1rem;
+    
+    justify-content: flex-start;
     justify-items: baseline;
     align-items: start;
 }
@@ -152,17 +190,17 @@ body{
 .inputBox{
     border: 1px solid var(--tertiary-clr);
     border-radius: 20em;
-    margin-bottom: 1.5em;
-    margin-right: 1.5em;
 
     /* Inner */
     padding: 1em;
+    align-content:center;
 
     box-sizing: border-box;
-    height: 4.5em;
-    width: 78vw;
-    flex-direction: column;
-    align-items: center;
+    min-height: 1em;
+    max-width: var(--chatbox-width);
+
+    margin-right: var(--input-box-margin);
+    margin-bottom: var(--input-box-margin);
 }
 
 .chatInput{
@@ -170,8 +208,8 @@ body{
     background:#ffffff00;
     display: flex;
     
-    height: 2em;
-    width: 90em;
+    height: .5rem;
+    width: var(--input-box-width);
 
     align-items: center;
     justify-content: center;
@@ -181,21 +219,29 @@ body{
     border: 0px;
     outline: 0px;
     font-family: "Outfit", sans-serif;
-    font-size: 22px;
+    /* font-size: clamp(4dvw, 24px, 5%); */
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
     color:#2b2c34;
     
-    padding: 1rem;
-    margin-right: 1.5rem;
     margin-left: 0.5rem;
     
     
-    width: 100rem;
+    width: var(--input-box-width);
+}
+
+code{
+    font-family:'Courier New', Courier, monospace;
+    /* font-weight: 700 */
+    align-items: center;
 }
 
 button{
     border: 0px;
     background-color:#ffffff00;
+}
+
+img{
+    height: 1.25rem;
 }

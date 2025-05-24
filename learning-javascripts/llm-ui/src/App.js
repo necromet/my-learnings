@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 import './App.css';
 import userIcon from './assets/user.svg'
 import aiIcon from './assets/ai_chatbot.svg'
@@ -10,10 +10,6 @@ import { renderChatContent } from './renderChatContent.js';
 function App() {
   const [input, setInput] = useState(""); // Setting up Inputs using useState.
   const [messages, setMessages] = useState([
-      {
-        content: "Hello, how can I help you?",  // Setting up messages to show in FrontEnd.
-        isBot: true
-      }
     ]);
 
   const [chatHistory, setChatHistory] = useState([ // Setting up Chat History so that the context is maintained.
@@ -76,7 +72,7 @@ function App() {
             <div className="chats">
               {messages.map((message, i) => 
                   <div key = {i} className={message.isBot?"chat bot": "chat"}>
-                    <img className = 'chatIMG' src={message.isBot?aiIcon:userIcon} alt=""/>
+                    {/* <img className = 'chatIMG' src={message.isBot?aiIcon:userIcon} alt=""/> */}
                     <p className="txt" dangerouslySetInnerHTML={{__html: renderChatContent(message.content) }}></p>
                   </div>
               )}
